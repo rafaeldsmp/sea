@@ -15,9 +15,8 @@ public class ClienteService {
     ClienteRepository clienteRepository;
 
     @Autowired
-    CustomerSuccessService customerSuccessService;    
+    CustomerSuccessService customerSuccessService;        
 
-    @SuppressWarnings("null")
     public void cadastrarCliente(Cliente cliente){
         if(cliente.getNivel() == null || cliente.getNivel() <= 50){
             CustomerSuccess idCustomerSuccess = customerSuccessService.buscarCustomerSuccess(ExperienciaCustomer.INICIANTE);

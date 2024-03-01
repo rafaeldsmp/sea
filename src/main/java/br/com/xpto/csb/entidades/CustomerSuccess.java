@@ -6,6 +6,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import br.com.xpto.csb.enums.ExperienciaCustomer;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -13,8 +14,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,15 +34,9 @@ public class CustomerSuccess {
     @NotNull
     @Enumerated(EnumType.ORDINAL)
     private ExperienciaCustomer experiencia;  
+    @Column(nullable = false)
     private boolean ausencia;
     @OneToMany(mappedBy = "customerSuccess")
     private List<Cliente> clientes;
 
-    @PrePersist
-    @PreUpdate
-    private void validarAusenciaCliente() {
-        if (this.ausencia && !clientes.isEmpty()) {
-            throw new IllegalStateException("O Customer Success não pode estar ausente se tiver clientes associados.");
-        }
-    }
 }
