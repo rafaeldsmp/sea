@@ -20,7 +20,7 @@ public class ClienteResource {
     ClienteService clienteService;
 
     @PostMapping
-    public ResponseEntity<String> postMethodName(@RequestBody Cliente cliente) throws Exception {
+    public ResponseEntity<String> inserirCliente(@RequestBody Cliente cliente) throws Exception {
         clienteService.cadastrarCliente(cliente);
         return ResponseEntity.status(HttpStatus.CREATED).body("Cliente cadastrado com sucesso.");
     }

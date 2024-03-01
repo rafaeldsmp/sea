@@ -22,4 +22,9 @@ public class CustomerSuccessService {
             return null;
         }
     }
+
+    @SuppressWarnings("null")
+    public CustomerSuccess cadastrarCustomer(CustomerSuccess customerSuccess){
+        return customerSuccessRepository.save(customerSuccess);
+    }
 }
