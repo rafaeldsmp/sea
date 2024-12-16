@@ -1,47 +1,44 @@
 package br.com.xpto.csb.entidades;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.util.List;
+
 @Entity
-@Table(name = "tb_cliente")
+@Table(name = "cliente")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Size(min = 3, max = 100)
-    @NotNull    
+
+    @Column(nullable = false, length = 100)
+    @Pattern(regexp = "^[A-Za-z\\d\\s]+$", message = "Nome deve conter apenas letras, números e espaços.")
+    @Size(min = 3, max = 100, message = "Nome deve ter entre 3 e 100 caracteres.")
+    @NotNull(message = "Nome é obrigatório.")
     private String nome;
-    @NotNull
-    private String cep;
-    @NotNull
-    private String logradouro;
-    @NotNull
-    private String bairro;
-    @NotNull
-    private String cidade;
-    @NotNull
-    private String uf;
-    private String complemento;
-    @NotNull
-    private String telefone;
-    @NotNull
-    private String email;
-    private Integer nivel;
-    @ManyToOne
-    @JoinColumn(name = "customer_success_id")
-    @NotNull
-    private CustomerSuccess customerSuccess;
+
+    @Column(nullable = false, unique = true, length = 11)
+    @NotNull(message = "CPF é obrigatório.")
+    private String cpf;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "endereco_id", referencedColumnName = "id")
+    private Endereco endereco;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Telefone> telefones;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Email> emails;
+
 }
